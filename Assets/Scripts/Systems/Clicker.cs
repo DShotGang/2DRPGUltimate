@@ -91,7 +91,7 @@ public class Clicker : MonoBehaviour
                 }
                 if (CharacterManager.SkillTeleDupeU == true) // if skill duplicate is unlocked 
                 {
-                    if (Input.GetButton("Q")) // Duplicate Held Object
+                    if (Input.GetButtonDown("Q")) // Duplicate Held Object
                     {
 
                         GameObject boom = Instantiate(DupeEffect) as GameObject;

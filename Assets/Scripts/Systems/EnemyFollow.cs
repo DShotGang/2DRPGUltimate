@@ -5,7 +5,8 @@ using UnityEngine;
 public class EnemyFollow : MonoBehaviour
 {
 
-
+    public bool Alive = true; // Starts alive and creates Alive bool variable
+    public int EnemyHealth = 25;
     public int damage = 2;
 
     public float speed;
@@ -14,9 +15,9 @@ public class EnemyFollow : MonoBehaviour
     private Transform target;
     private Animator anim;
     private GameObject skele;
-    public bool Alive = true; // Starts alive and creates Alive bool variable
 
-    public int EnemyHealth = 25;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -58,6 +59,7 @@ public class EnemyFollow : MonoBehaviour
         if (Alive == false)
         {
             anim.Play("SkeletonDead");
+
             deathEvent();
 
         }
@@ -65,6 +67,8 @@ public class EnemyFollow : MonoBehaviour
 
     public void deathEvent() // New way of destroying after an animation, This is way better. Using animation events.
     {
+        CharacterManager.Experience = CharacterManager.Experience + 2;
+
         Destroy(gameObject, 0.6f);
     }
 
@@ -80,8 +84,7 @@ public class EnemyFollow : MonoBehaviour
         {
 
             Debug.Log("Hit Enemy");
-            EnemyHealth = EnemyHealth - 10;
-
+            EnemyHealth = EnemyHealth - CharacterManager.Damage;
         }
     }
 }

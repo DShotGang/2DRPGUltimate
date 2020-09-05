@@ -28,6 +28,9 @@ public class CharacterManager : MonoBehaviour
     static public int BattlePower = 50;
     static public float Form = 1f;
 
+    static public int Experience = 1;
+    static public int LevelExperienceNeeded = 3;
+
     static public int Health = 100;
     public int maxHealth = 100;
 
@@ -49,7 +52,7 @@ public class CharacterManager : MonoBehaviour
     static public int Luck = 1;
 
     static public int Defense = 0;
-
+    static public int Damage = 5;
 
 
 
@@ -233,18 +236,24 @@ public class CharacterManager : MonoBehaviour
    private void FixedUpdate()
     {
         Stamina = Stamina + StaminaChargeRate;
+
+        if(Experience >= LevelExperienceNeeded)
+        {
+            LevelUp();
+            Experience = 0;
+        }
+
     }
 
     private void LevelUp()
     {
         Level = Level + 1;
+        LevelExperienceNeeded = LevelExperienceNeeded + 20 * Level;
+        TP = TP + 1;
+        Damage = Damage + Strength + 1;
+        maxKi = maxKi + Ki;
 
-
-        if (Level == 5)
-        {
-            Debug.Log("You unlocked Ascended Saiyan");
-            maxForm = 0.5f;
-        }
+        
 
         if (Level == 10)
         {

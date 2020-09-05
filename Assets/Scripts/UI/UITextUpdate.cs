@@ -29,6 +29,7 @@ public class UITextUpdate : MonoBehaviour
             "\nHealth " + CharacterManager.Health +
             "\nKi " + CharacterManager.Ki +
             "\nStamina " + CharacterManager.Stamina + 
-            "\nForm " + CharacterManager.Form;
+            "\nForm " + CharacterManager.Form +
+            "\nXP " + CharacterManager.Experience;
     }
 }
