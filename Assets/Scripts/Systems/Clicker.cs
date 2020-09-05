@@ -10,6 +10,7 @@ public class Clicker : MonoBehaviour
 
     public GameObject Crate;
     public GameObject Explosion1;
+    public GameObject DupeEffect;
 
     bool TSkill;
 
@@ -67,7 +68,7 @@ public class Clicker : MonoBehaviour
 
 
             // IF OBJECT CLICKED ON HAS "ITEM" TAG
-            if (theClickedObject.transform.tag == "Destroyable" || theClickedObject.transform.tag == "Floor" || theClickedObject.transform.tag == "Item")
+            if (theClickedObject.transform.tag == "Destroyable" || theClickedObject.transform.tag == "Floor" || theClickedObject.transform.tag == "Item" || theClickedObject.transform.tag == "Enemy")
             {
 
 
@@ -90,18 +91,18 @@ public class Clicker : MonoBehaviour
                 }
                 if (CharacterManager.SkillTeleDupeU == true) // if skill duplicate is unlocked 
                 {
-                    if (Input.GetButtonDown("Q")) // Duplicate Held Object
+                    if (Input.GetButton("Q")) // Duplicate Held Object
                     {
 
-                        GameObject boom = Instantiate(Explosion1) as GameObject;
+                        GameObject boom = Instantiate(DupeEffect) as GameObject;
                         boom.transform.position = theClickedObject.transform.position;
-                        GameObject dupe = Instantiate(theClickedObject.collider.gameObject);
+                        GameObject dupe = Instantiate(theClickedObject.collider.gameObject) as GameObject;
+                        dupe.transform.position = new Vector2(theClickedObject.transform.position.x + 1, theClickedObject.transform.position.y + 1);
 
 
                         Debug.Log("You duped the " + theClickedObject);
                     }
                 }
-                else { print("You touched the Item,  nice!");  }
                 
             }
 
@@ -112,20 +113,6 @@ public class Clicker : MonoBehaviour
             if (theClickedObject.collider != null)
             {
 
-
-                if (theClickedObject.collider.tag == "Item")
-                {
-                    print("You touched the Item,  nice??????????????!");
-                    //Set the position of our theClickedObject to be equal to our mouse position
-
-                   // if (Input.GetButton("F"))
-                    //{
-                        //theClickedObject.collider.transform.position = mousePos;
-
-                    //}
-
-
-                }
 
 
 

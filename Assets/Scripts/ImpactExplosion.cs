@@ -9,9 +9,10 @@ public class ImpactExplosion : MonoBehaviour
 
     public GameObject Projectile;
     public GameObject Explosion;
+    
 
-    int BP;
-    public int ExplosionSizeMultiplier;
+    int BP = 2;
+    public int ExplosionSizeMultiplier = 1 / 2;
 
 
 
@@ -30,7 +31,7 @@ public class ImpactExplosion : MonoBehaviour
 
     private void FixedUpdate()
     {
-        BP = CharacterManager.BattlePower / 237 * ExplosionSizeMultiplier;
+        
     }
 
 
@@ -38,11 +39,21 @@ public class ImpactExplosion : MonoBehaviour
     {
         
 
-        if (collider.transform.tag == "Destroyable"  || collider.transform.tag == "Floor" || collider.transform.tag == "Item")
+        if (collider.transform.tag == "Destroyable"  || collider.transform.tag == "Floor" || collider.transform.tag == "Item" || collider. transform.tag == "Enemy")
         {
 
             GameObject a = Instantiate(Explosion) as GameObject;
-            a.transform.localScale = new Vector2(BP/2, BP/2);
+            a.transform.localScale = new Vector2(ExplosionSizeMultiplier, ExplosionSizeMultiplier);
+            a.transform.position = Projectile.transform.position;
+            Destroy(Projectile);
+        }
+
+        if (collider.transform.tag == "Enemy")
+        {
+
+            Debug.Log("Hit Enemy");
+            GameObject a = Instantiate(Explosion) as GameObject;
+            a.transform.localScale = new Vector2(BP / 2, BP / 2);
             a.transform.position = Projectile.transform.position;
             Destroy(Projectile);
         }

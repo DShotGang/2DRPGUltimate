@@ -23,18 +23,34 @@ public class CharacterManager : MonoBehaviour
 
 
     public string CharacterName = "Default";
+
     static public int Level = 1;
     static public int BattlePower = 50;
     static public float Form = 1f;
+
     static public int Health = 100;
     public int maxHealth = 100;
+
     static public int Ki = 100;
     public int maxKi = 100;
+
     public static int Stamina = 100;
     public int maxStamina = 100;
     public int StaminaChargeRate = 1;
-    static public int xp = 0;
+
+    static public int TP = 0; // For training point, every stat, skill or ability, cost one training point. and other requirments
+
+
     static public float maxForm = 1f;
+
+    static public int Strength = 1;
+    static public int Wisdom = 1;
+    static public int Dexterity = 1;
+    static public int Luck = 1;
+
+    static public int Defense = 0;
+
+
 
 
     public byte rgbr = 255;
@@ -47,8 +63,11 @@ public class CharacterManager : MonoBehaviour
     public static bool SS1 = false;
 
 
-    public static bool SS1Unlocked = false;
-    public static bool SS1AUnlocked = false;
+    public static bool TransformationSS1Unlocked = false;
+    public static bool TransformationSS1FullPowerUnlocked = false;
+    public static bool TransformationSS2Unlocked = false;
+    public static bool TransformationSS3Unlocked = false;
+
 
 
 
@@ -68,6 +87,9 @@ public class CharacterManager : MonoBehaviour
     public SpriteRenderer AuraColor;
 
 
+    
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -76,6 +98,10 @@ public class CharacterManager : MonoBehaviour
         AuraBaseColor();
         Color32 newColor = new Color32(rgbr, rgbg, rgbb, 0);
         AuraColor.color = newColor;
+
+        int Armour = 0;
+        int Defense = Strength / 20 + Armour;
+
     }
 
     // Update is called once per frame
@@ -245,9 +271,9 @@ public class CharacterManager : MonoBehaviour
         Aura.transform.localScale = new Vector3(MaxAura, MaxAura, 1);
         
 
-
-
     }
+
+
 
 
 

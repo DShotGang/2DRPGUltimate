@@ -10,6 +10,8 @@ TagManager:
   - Crosshair
   - Item
   - Destroyable
+  - Collectable
+  - Projectile
   layers:
   - Default
   - TransparentFX

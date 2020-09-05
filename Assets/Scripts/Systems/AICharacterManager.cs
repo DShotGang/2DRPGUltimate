@@ -5,18 +5,14 @@ using UnityEngine.UI;
 
 public class AICharacterManager : MonoBehaviour
 {
-    private float timer = 0f;
-    private float timer1 = 0f;
-    private float timer2 = 0f;
-    private float holdDur = 3f;
 
     public Text txt;
 
-    public int kichargevalue = 1;
-    public int kipassivechargevalue = 1;
-    public bool idleaura = false;
-    public bool passivechargingKi = false;
-    public bool chargingKi = false;
+    int kichargevalue = 1;
+    int kipassivechargevalue = 1;
+    bool idleaura = false;
+    bool passivechargingKi = false;
+    bool chargingKi = false;
 
 
 
@@ -35,186 +31,103 @@ public class AICharacterManager : MonoBehaviour
     static public float maxForm = 1f;
 
 
-    public byte rgbr = 255;
-    public byte rgbg = 255;
-    public byte rgbb = 255;
-    public byte rgba = 255;
+    byte rgbr = 255;
+    byte rgbg = 255;
+    byte rgbb = 255;
+    byte rgba = 255;
 
 
     public static bool Base = true;
-    public static bool SS1 = false;
+    static bool SS1 = false;
   
-    public bool SS1Unlocked = false;
-    public bool SS1AUnlocked = false;
-
-
-
-    public Animator CharacterAnimator;
-    public Animator auraAnimator;
-    public GameObject Aura;
-    public SpriteRenderer AuraColor;
+    bool SS1Unlocked = false;
+    bool SS1AUnlocked = false;
 
     private Transform AIstartingPosition;
     private Transform AITarget;
 
 
-    private Rigidbody2D player;
-    public float runSpeed = 2f;
-    float timeout = 0.3f;
-
-    public static Vector2 gravity;
-    public Camera Camera;
-
-    public float jumpForce = 400f;
-    bool jump = false;
-    bool fly = false;
-    public bool Grounded = true;
-    public float gravityScale;
-    static public int projectilechoice = 1;
-
-    enum GravityDirection { Down, Left, Up, Right };
-    GravityDirection m_GravityDirection;
-
-    Vector2 reachedPositionDistance;
 
 
-    private void Awake()
-    {
-        
-    }
 
-    Vector2 AiTarget2; 
+    public int damage = 2;
+
+    public float speed = 4;
+    public float stoppingDistance = 4;
+
+    private Transform target;
+    private Animator anim;
+    private GameObject skele;
+    public bool Alive = true; // Starts alive and creates Alive bool variable
 
     // Start is called before the first frame update
     void Start()
     {
-        Aura.transform.gameObject.SetActive(true);
-        //bool idleaura = false;
-        AuraBaseColor();
-        Color32 newColor = new Color32(rgbr, rgbg, rgbb, 0);
-        AuraColor.color = newColor;
 
-        AITarget = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
-        AiTarget2 = new Vector2(AITarget.position.x, AITarget.position.y);
+
+        target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+        anim = gameObject.GetComponent<Animator>();
+        Alive = true;
 
     }
+
+
+
+    private void FixedUpdate()
+    {
+        Stamina = Stamina + StaminaChargeRate; // Charge Stamina constant
+        if (Alive == true)
+        {
+
+
+            if (Vector2.Distance(transform.position, target.position) > stoppingDistance) // If Skeleton's distance to target is more than stopping distance, Move and play anim
+            {
+                transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime); // Move
+
+            }
+
+            if (Vector2.Distance(transform.position, target.position) <= stoppingDistance) // if equals to or less than stopping distance
+            {
+                anim.Play("SkeletonAttackA1"); // Play animation
+            }
+
+            //Stamina Cap
+            if (Stamina >= maxStamina) { Stamina = maxStamina; }
+            Stamina = Stamina + StaminaChargeRate;
+
+            if (Health <= 0)
+            {
+                Alive = false;
+            }
+
+        }
+        else if (Alive == false)
+        {
+            anim.Play("SkeletonDead");
+            deathEvent();
+            // Destroy(skele, 3.4f); // Lame way of destroying after an animation, the right way is to use animation triggers i think, do it later.
+        }
+
+    }
+
+
 
     // Update is called once per frame
     void Update()
     {
 
 
+        
+    
 
-
-
-        AuraScale();
-
-
-        //Health Cap
-        if (Health >= maxHealth) { Health = maxHealth; }
-
-        //Ki Cap
-        if (Ki >= maxKi) { Ki = maxKi; }
-
-        if (idleaura == true)
-        {
-            Color32 newColor = new Color32(rgbr, rgbg, rgbb, 255);
-            AuraColor.color = newColor;
-            passivechargingKi = true;
-        }
-
-        if (Ki <= 0) { Ki = 0; }
-
-
-
-        //Stamina Cap
-        if (Stamina >= maxStamina) { Stamina = maxStamina; }
-        Stamina = Stamina + StaminaChargeRate;
-
-
-        if (Input.GetButtonDown("T"))
-        {
-            Form = 0;
-            Base = true;
-        }
-
-
-
-
-        if (Input.GetButtonDown("H"))
-        {
-            timer = Time.time;
-            timer1 = Time.time;
-        }
-        if (Input.GetButton("H"))
-        {
-            if (Time.time - timer > holdDur)
-            {
-                //by making it positive inf, we won't subsequently run this code by accident,
-                //since X - +inf = -inf, which is always less than holdDur
-                CharacterAnimator.Play("TransformSS1");
-                if (Level >= 5 && Level <= 9)
-                {
-                    Form = Form + 1f;
-                    Ki = Ki - 150;
-                    if (Form >= maxForm) { Form = maxForm; }
-                    Base = false;
-                    timer1 = float.PositiveInfinity;
-
-                }
-
-
-                if (Form == 0f)
-                {
-                    auraAnimator.Play("AuraAnimBase");
-                    AuraBaseColor();
-                }
-
-
-                if (Form == 1f)
-                {
-
-                    Color32 newColor = new Color32(rgbr, rgbg, rgbb, 255);
-                }
-            }
-        }
-        else
-        {
-            timer = float.PositiveInfinity;
-        }
-
-
+       
     }
 
 
-    private void FixedUpdate()
+    // FUNCTIONS
+
+    public void deathEvent() // New way of destroying after an animation, This is way better. Using animation events.
     {
-        Stamina = Stamina + StaminaChargeRate;
-
-        if (Vector2.Distance(transform.position, AiTarget2) >= 3)
-        {
-            transform.position = Vector2.MoveTowards(transform.position, AITarget.position, runSpeed * Time.deltaTime);
-        }
+        Destroy(skele);
     }
-
-
-
-
-    private void AuraBaseColor()
-    {
-        rgbr = 255;
-        rgbg = 255;
-        rgbb = 255;
-    }
-
-    private void AuraScale()
-    {
-
-        float MaxAura = (Level / 40f + 1f);
-
-        Aura.transform.localScale = new Vector3(MaxAura, MaxAura, 1);
-
-    }
-
-
 }

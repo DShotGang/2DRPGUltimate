@@ -5,6 +5,9 @@ using UnityEngine;
 public class EnemyFollow : MonoBehaviour
 {
 
+
+    public int damage = 2;
+
     public float speed;
     public float stoppingDistance;
 
@@ -12,8 +15,8 @@ public class EnemyFollow : MonoBehaviour
     private Animator anim;
     private GameObject skele;
     public bool Alive = true; // Starts alive and creates Alive bool variable
-    
 
+    public int EnemyHealth = 25;
 
     // Start is called before the first frame update
     void Start()
@@ -27,6 +30,12 @@ public class EnemyFollow : MonoBehaviour
     void Update()
     {
         // If Alive
+
+
+    }
+
+    private void FixedUpdate()
+    {
         if (Alive == true)
         {
 
@@ -43,24 +52,36 @@ public class EnemyFollow : MonoBehaviour
 
 
 
-
+            if (EnemyHealth <= 0) { Alive = false; }
 
         }
-        else if (Alive == false)
+        if (Alive == false)
         {
             anim.Play("SkeletonDead");
-            Destroy(skele, 3.4f); // Lame way of destroying after an animation, the right way is to use animation triggers i think, do it later.
-        }
+            deathEvent();
 
+        }
     }
 
-
-    private bool lookRight = true;
-    private void flip()
+    public void deathEvent() // New way of destroying after an animation, This is way better. Using animation events.
     {
-        lookRight = !lookRight;
-        Vector3 oposcale = transform.localScale;
-        oposcale.x *= -1;
-        transform.localScale = oposcale;
+        Destroy(gameObject, 0.6f);
+    }
+
+    public void attackEvent()
+    {
+        int EnemyDamage = 5;
+        CharacterManager.Health = CharacterManager.Health - EnemyDamage;
+    }
+
+    private void OnCollisionStay2D(Collision2D collider)
+    {
+        if (collider.transform.tag == "Projectile")
+        {
+
+            Debug.Log("Hit Enemy");
+            EnemyHealth = EnemyHealth - 10;
+
+        }
     }
 }
