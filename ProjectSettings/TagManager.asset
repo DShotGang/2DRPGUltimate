@@ -12,6 +12,7 @@ TagManager:
   - Destroyable
   - Collectable
   - Projectile
+  - Building
   layers:
   - Default
   - TransparentFX
