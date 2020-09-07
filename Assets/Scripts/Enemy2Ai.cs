@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyFollow : MonoBehaviour
+public class Enemy2Ai : MonoBehaviour
 {
-
     public bool Alive = true; // Starts alive and creates Alive bool variable
     public int EnemyHealth = 50;
     public int damage = 10;
 
-    public float speed = 4;
+    public float speed = 3;
     public float stoppingDistance = 2;
 
     private Transform Enemy;
@@ -33,20 +32,17 @@ public class EnemyFollow : MonoBehaviour
     void Update()
     {
         // If Alive
-        if (Alive == true)
+        if(Alive == true)
         {
-            if (beingHit == false)
+            if (Enemy.position.x < target.position.x)
             {
-                if (Enemy.position.x < target.position.x)
-                {
-                    //face right
-                    transform.localScale = new Vector3(5, 5, 1);
-                }
-                else if (Enemy.position.x > target.position.x)
-                {
-                    //face left
-                    transform.localScale = new Vector3(-5, 5, 1);
-                }
+                //face right
+                transform.localScale = new Vector3(6, 6, 6);
+            }
+            else if (Enemy.position.x > target.position.x)
+            {
+                //face left
+                transform.localScale = new Vector3(-6, 6, 6);
             }
         }
 
@@ -64,21 +60,21 @@ public class EnemyFollow : MonoBehaviour
 
 
                 if (Vector2.Distance(transform.position, target.position) > stoppingDistance) // If Skeleton's distance to target is more than stopping distance, Move and play anim
-                {
+            {
 
-                    transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime); // Move
-                    anim.Play("Run"); // Play animation
+                transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime); // Move
+                anim.Play("Run"); // Play animation
 
-                }
-
-
-                if (Vector2.Distance(transform.position, target.position) <= stoppingDistance) // if equals to or less than stopping distance
-                {
-
-                    anim.Play("Attack1"); // Play animation
-
-                }
             }
+
+
+            if (Vector2.Distance(transform.position, target.position) <= stoppingDistance) // if equals to or less than stopping distance
+            {
+
+                anim.Play("Attack1"); // Play animation
+
+            }
+        }
 
 
             if (EnemyHealth <= 0) { Alive = false; }
@@ -95,7 +91,7 @@ public class EnemyFollow : MonoBehaviour
 
     public void deathEvent() // New way of destroying after an animation, This is way better. Using animation events.
     {
-        CharacterManager.Experience = CharacterManager.Experience + 2;
+        CharacterManager.Experience = CharacterManager.Experience + 4;
 
         Destroy(gameObject, 0.6f);
     }
@@ -113,7 +109,7 @@ public class EnemyFollow : MonoBehaviour
         anim.Play("Take Hit");
         EnemyHealth = EnemyHealth - CharacterManager.Damage;
     }
-
+        
     private void HitEvent()
     {
         beingHit = false;
