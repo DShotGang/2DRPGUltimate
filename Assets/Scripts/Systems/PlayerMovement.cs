@@ -30,14 +30,6 @@ public class PlayerMovement : MonoBehaviour
 
 
 
-    public bool SkillTeleU = true; // "Tele" Being short for telekinesis
-    public bool SkillTeleExplodeU = true;
-    public bool SkillTeleDupeU = true;
-    public bool SkillFireballU = true;
-    public bool SkillKameU = true;
-    public bool SkillFlyU = true;
-    public bool SkillTeleportU = true;
-    public bool SkillDoubleJumpU = true;
 
 
 
@@ -205,14 +197,7 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
 
-        SkillTeleU = (CharacterManager.SkillTeleU); // "Tele" Being short for telekinesis
-        SkillTeleExplodeU = (CharacterManager.SkillTeleExplodeU);
-        SkillTeleDupeU = (CharacterManager.SkillTeleDupeU);
-        SkillFireballU = (CharacterManager.SkillFireballU);
-        SkillKameU = (CharacterManager.SkillKameU);
-        SkillFlyU = (CharacterManager.SkillFlyU);
-        SkillTeleportU = (CharacterManager.SkillTeleportU);
-        SkillDoubleJumpU = (CharacterManager.SkillDoubleJumpU);
+        runSpeed = CharacterManager.Dexterity / 4 + CharacterManager.Strength / 4 + 5;
 
 
 

@@ -1,13 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyFollow : MonoBehaviour
 {
 
     public bool Alive = true; // Starts alive and creates Alive bool variable
-    public int EnemyHealth = 50;
-    public int damage = 10;
+    public int EnemyHealth;
+    public int EnemyLevel = 1;
+    public int EnemyDamage = 10;
 
     public float speed = 4;
     public float stoppingDistance = 2;
@@ -26,7 +28,9 @@ public class EnemyFollow : MonoBehaviour
         Enemy = GetComponent<Transform>();
         Alive = true;
         beingHit = false;
-
+        EnemyLevel = CharacterManager.Level / 2 + 1;
+        EnemyHealth = EnemyLevel * 4 + 15;
+        EnemyDamage = EnemyLevel * 2 + 10;
     }
 
     // Update is called once per frame
@@ -57,6 +61,18 @@ public class EnemyFollow : MonoBehaviour
     {
         if (Alive == true)
         {
+
+
+
+            
+
+
+
+
+
+
+
+
 
             if (beingHit == false)
             {
@@ -95,20 +111,28 @@ public class EnemyFollow : MonoBehaviour
 
     public void deathEvent() // New way of destroying after an animation, This is way better. Using animation events.
     {
-        CharacterManager.Experience = CharacterManager.Experience + 2;
+        CharacterManager.Experience = CharacterManager.Experience + 2 + EnemyLevel / 2;
 
         Destroy(gameObject, 0.6f);
     }
 
     public void attackEvent()
     {
-        int EnemyDamage = 5;
+        int EnemyDamage = 2 * EnemyLevel + 5;
         CharacterManager.Health = CharacterManager.Health - EnemyDamage;
     }
 
-    private void Hit()
+    private void ProjectileHit()
     {
-        Debug.Log("Hit Enemy");
+        Debug.Log("Hit Enemy with Projectile");
+        beingHit = true;
+        anim.Play("Take Hit");
+        EnemyHealth = EnemyHealth - CharacterManager.KiDamage;
+    }
+
+    private void MeleeHit()
+    {
+        Debug.Log("Hit Enemy with Melee");
         beingHit = true;
         anim.Play("Take Hit");
         EnemyHealth = EnemyHealth - CharacterManager.Damage;
@@ -125,7 +149,16 @@ public class EnemyFollow : MonoBehaviour
         if (collider.transform.tag == "Projectile")
         {
 
-            Hit();
+            ProjectileHit();
+            Invoke("HitEvent", 0.4f);
+
+
+        }
+
+        if (collider.transform.tag == "Melee")
+        {
+
+            MeleeHit();
             Invoke("HitEvent", 0.4f);
 
 

@@ -7,8 +7,7 @@ public class Attributes : MonoBehaviour
 {
 
     public Text txt;
-    int ki;
-    int health;
+
     string stringname;
 
 
@@ -21,8 +20,7 @@ public class Attributes : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        txt.text = "Attributes\n" +
-    "Strength:  " + CharacterManager.Strength + 
+        txt.text = "Strength: " + CharacterManager.Strength + 
     "\nWisdom: " + CharacterManager.Wisdom +
     "\nDexterity: " + CharacterManager.Dexterity + 
     "\nLuck: " + CharacterManager.Luck;

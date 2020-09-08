@@ -12,6 +12,7 @@ public class CharacterManager : MonoBehaviour
     private float holdDur = 3f;
 
     public Text txt;
+    
 
     public int kichargevalue = 1;
     public int kipassivechargevalue = 1;
@@ -53,6 +54,7 @@ public class CharacterManager : MonoBehaviour
 
     static public int Defense = 0;
     static public int Damage = 5;
+    static public int KiDamage = 1;
 
 
 
@@ -74,14 +76,15 @@ public class CharacterManager : MonoBehaviour
 
 
 
-    public static bool SkillTeleU = true; // "Tele" Being short for telekinesis
+    public static bool SkillTeleU = false; // "Tele" Being short for telekinesis
     public static bool SkillTeleExplodeU = true;
     public static bool SkillTeleDupeU = true;
-    public static bool SkillFireballU = true;
+    public static bool SkillFireballU = false;
     public static bool SkillKameU = true;
     public static bool SkillFlyU = true;
     public static bool SkillTeleportU = true;
     public static bool SkillDoubleJumpU = true;
+    public static bool ExtraSenses = false;
 
 
     public Animator CharacterAnimator;
@@ -104,6 +107,8 @@ public class CharacterManager : MonoBehaviour
 
         int Armour = 0;
         int Defense = Strength / 20 + Armour;
+
+        
 
     }
 
@@ -243,6 +248,12 @@ public class CharacterManager : MonoBehaviour
             Experience = 0;
         }
 
+
+        Damage = Strength * 5;
+        KiDamage = Wisdom * 5;
+        maxKi = Wisdom * 5 + 10;
+        
+
     }
 
     private void LevelUp()
@@ -250,8 +261,6 @@ public class CharacterManager : MonoBehaviour
         Level = Level + 1;
         LevelExperienceNeeded = LevelExperienceNeeded + 20 * Level;
         TP = TP + 1;
-        Damage = Damage + Strength + 1;
-        maxKi = maxKi + Ki;
 
         
 

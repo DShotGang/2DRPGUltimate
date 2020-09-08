@@ -120,6 +120,11 @@ public class Clicker : MonoBehaviour
                 //Transform puzzTrans = puzzlePiece.collider.transform;
                 //puzzTrans.position = new Vector3(mousePos.x, mousePos.y, puzzTrans.position.z);
             }
+
+            else
+            {
+                Debug.Log("Log");
+            }
         }
 
         //Did we let go of the mouse button?

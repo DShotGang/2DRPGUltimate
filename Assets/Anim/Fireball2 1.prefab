@@ -154,4 +154,4 @@ MonoBehaviour:
   Projectile: {fileID: 8605118249966458927}
   Explosion: {fileID: 2524401299405255307, guid: aeef4a60b46dce2458d2797fa5b11d32,
     type: 3}
-  ExplosionSizeMultiplier: 0
+  ExplosionSizeMultiplier: 1

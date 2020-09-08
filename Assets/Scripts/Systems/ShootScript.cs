@@ -6,6 +6,7 @@ public class ShootScript : MonoBehaviour
 {
     public GameObject crosshairs;
     public GameObject player;
+    public GameObject Shoothole; 
     public GameObject projectilePrefab1;
     public GameObject projectilePrefab2;
     public GameObject projectilePrefab3;// Work in Progress
@@ -76,7 +77,26 @@ public class ShootScript : MonoBehaviour
 
         if (Input.GetMouseButtonDown(1))
         {
-            if (PlayerMovement.projectilechoice >= 1)
+            if (PlayerMovement.projectilechoice == 1)
+            {
+
+                if (SkillFireballU == true)
+                {
+
+                    if (CharacterManager.Ki >= 5)//Fire Bullet 
+                    {
+                        CharacterManager.Ki = CharacterManager.Ki - 5;
+                        float distance = difference.magnitude;
+                        Vector2 direction = difference / distance;
+                        direction.Normalize();
+                        fireProjectile(direction, rotationZ);
+                        //Debug.Log("Pew"); //work in progress2
+
+                    }
+                }
+            }
+
+            if (PlayerMovement.projectilechoice >= 2)
             {
 
                 if (CharacterManager.Ki >= 5)//Fire Bullet 
@@ -87,7 +107,7 @@ public class ShootScript : MonoBehaviour
                     direction.Normalize();
                     fireProjectile(direction, rotationZ);
                     //Debug.Log("Pew"); //work in progress2
-                    
+
                 }
             }
         }
@@ -116,9 +136,9 @@ public class ShootScript : MonoBehaviour
         SkillTeleportU = (CharacterManager.SkillTeleportU);
         SkillDoubleJumpU = (CharacterManager.SkillDoubleJumpU);
 
-
+        
     }
-
+    //GameObject b;
     void fireProjectile(Vector2 direction, float RotationZ)
     {
 
@@ -136,7 +156,7 @@ public class ShootScript : MonoBehaviour
         if (PlayerMovement.projectilechoice == 2)
         {   // if press two choose. This is the last thing i worked on
             GameObject b = Instantiate(projectilePrefab2) as GameObject;
-            b.transform.position = player.transform.position;
+            b.transform.position = Shoothole.transform.position;
             b.transform.rotation = Quaternion.Euler(0.0f, 0.0f, RotationZ);
             b.GetComponent<Rigidbody2D>().velocity = direction * projectileSpeed;
             Debug.Log("Projectile choice = 2");

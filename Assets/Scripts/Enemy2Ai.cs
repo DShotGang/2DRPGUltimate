@@ -5,6 +5,8 @@ using UnityEngine;
 public class Enemy2Ai : MonoBehaviour
 {
     public bool Alive = true; // Starts alive and creates Alive bool variable
+
+    public int EnemyLevel = 1;
     public int EnemyHealth = 50;
     public int damage = 10;
 
@@ -25,6 +27,10 @@ public class Enemy2Ai : MonoBehaviour
         Enemy = GetComponent<Transform>();
         Alive = true;
         beingHit = false;
+
+
+        EnemyLevel = CharacterManager.Level / 4 + 1;
+        EnemyHealth = EnemyLevel * 20 + 50;
 
     }
 
@@ -91,7 +97,7 @@ public class Enemy2Ai : MonoBehaviour
 
     public void deathEvent() // New way of destroying after an animation, This is way better. Using animation events.
     {
-        CharacterManager.Experience = CharacterManager.Experience + 4;
+        CharacterManager.Experience = CharacterManager.Experience + 4 * EnemyLevel;
 
         Destroy(gameObject, 0.6f);
     }
@@ -107,7 +113,7 @@ public class Enemy2Ai : MonoBehaviour
         Debug.Log("Hit Enemy");
         beingHit = true;
         anim.Play("Take Hit");
-        EnemyHealth = EnemyHealth - CharacterManager.Damage;
+        EnemyHealth = EnemyHealth - CharacterManager.KiDamage;
     }
         
     private void HitEvent()
