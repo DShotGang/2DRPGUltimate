@@ -24,7 +24,7 @@ public class Clicker : MonoBehaviour
     public bool SkillFlyU = true;
     public bool SkillTeleportU = true;
     public bool SkillDoubleJumpU = true;
-
+    
 
 
     void Start()
@@ -50,7 +50,16 @@ public class Clicker : MonoBehaviour
 
         if (SkillSpawnCrateU == true)
         {
-            if (Input.GetButtonDown("E")) // Spawn Crate
+
+            if (CharacterManager.Spam == true) {
+                if (Input.GetButton("E")) // Spawn Crate
+                {
+                    GameObject newItem = Instantiate(Crate) as GameObject;
+                    newItem.transform.position = new Vector2(mousePos.x, mousePos.y);
+                    print("Crate Spawned!");
+                }
+            }
+            else if (Input.GetButtonDown("E")) // Spawn Crate
             {
                 GameObject newItem = Instantiate(Crate) as GameObject;
                 newItem.transform.position = new Vector2(mousePos.x, mousePos.y);

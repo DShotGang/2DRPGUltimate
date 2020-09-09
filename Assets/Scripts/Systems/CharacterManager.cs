@@ -21,7 +21,7 @@ public class CharacterManager : MonoBehaviour
     public bool passivechargingKi = false;
     public bool chargingKi = false;
 
-
+    static public bool Spam = false;
 
     public string CharacterName = "Default";
 
