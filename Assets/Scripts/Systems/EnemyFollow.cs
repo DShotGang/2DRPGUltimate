@@ -14,9 +14,12 @@ public class EnemyFollow : MonoBehaviour
     public float speed = 4;
     public float stoppingDistance = 2;
 
+    public GameObject EnemyGuy;
     private Transform Enemy;
     private Transform target;
     private Animator anim;
+
+    private Transform RespawnTarget;
 
     bool beingHit;
 
@@ -31,6 +34,9 @@ public class EnemyFollow : MonoBehaviour
         EnemyLevel = CharacterManager.Level / 2 + 1;
         EnemyHealth = EnemyLevel * 4 + 15;
         EnemyDamage = EnemyLevel * 2 + 10;
+
+        RespawnTarget = GameObject.Find("EnemyRespawn2").GetComponent<Transform>();
+        EnemyGuy.transform.position = RespawnTarget.transform.position;
     }
 
     // Update is called once per frame
@@ -62,29 +68,57 @@ public class EnemyFollow : MonoBehaviour
         if (Alive == true)
         {
 
-
-
-            
-
-
-
-
-
-
-
-
-
             if (beingHit == false)
             {
 
 
+                //if (Vector2.Distance(transform.position, RespawnTarget.position) <= 10) {}
 
-                if (Vector2.Distance(transform.position, target.position) > stoppingDistance) // If Skeleton's distance to target is more than stopping distance, Move and play anim
+
+                if (Vector2.Distance(transform.position, target.position) <= 9)
                 {
 
-                    transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime); // Move
-                    anim.Play("Run"); // Play animation
 
+                    if (Vector2.Distance(transform.position, target.position) > stoppingDistance) // If Skeleton's distance to target is more than stopping distance, Move and play anim
+                    {
+
+                        transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime); // Move
+                        anim.Play("Run"); // Play animation
+                        if (Enemy.position.x < target.position.x)
+                        {
+                            //face right
+                            transform.localScale = new Vector3(5, 5, 1);
+                        }
+                        else if (Enemy.position.x > target.position.x)
+                        {
+                            //face left
+                            transform.localScale = new Vector3(-5, 5, 1);
+                        }
+
+                    }
+                }
+                else
+                {
+
+                    if (Vector2.Distance(transform.position, RespawnTarget.position) >= 3)
+                    {
+                        transform.position = Vector2.MoveTowards(transform.position, RespawnTarget.position, speed * Time.deltaTime);
+                        anim.Play("Run");
+                        if (transform.position.x < RespawnTarget.position.x)
+                        {
+                            //face right
+                            transform.localScale = new Vector3(5, 5, 1);
+                        }
+                        else if (Enemy.position.x > RespawnTarget.position.x)
+                        {
+                            //face left
+                            transform.localScale = new Vector3(-5, 5, 1);
+                        }
+                    }
+                    else
+                    {
+                        anim.Play("Skeleton1");
+                    }
                 }
 
 
@@ -112,7 +146,7 @@ public class EnemyFollow : MonoBehaviour
     public void deathEvent() // New way of destroying after an animation, This is way better. Using animation events.
     {
         CharacterManager.Experience = CharacterManager.Experience + 2 + EnemyLevel / 2;
-
+        Invoke("Respawn", 0.599999f);
         Destroy(gameObject, 0.6f);
     }
 
@@ -143,6 +177,12 @@ public class EnemyFollow : MonoBehaviour
         beingHit = false;
     }
 
+    private void Respawn()
+    {
+        Instantiate(EnemyGuy);
+        RespawnTarget = GameObject.Find("EnemyRespawn2").GetComponent<Transform>();
+        EnemyGuy.transform.position = RespawnTarget.transform.position;
+    }
 
     private void OnCollisionEnter2D(Collision2D collider)
     {

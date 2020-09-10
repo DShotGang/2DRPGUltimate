@@ -13,6 +13,7 @@ TagManager:
   - Collectable
   - Projectile
   - Building
+  - EnemyRespawn
   layers:
   - Default
   - TransparentFX

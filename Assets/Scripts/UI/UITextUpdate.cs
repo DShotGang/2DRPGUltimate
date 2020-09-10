@@ -25,7 +25,6 @@ public class UITextUpdate : MonoBehaviour
 
         txt.text = "Stats\n" +
             "Level " + CharacterManager.Level +
-            "\nBP " + CharacterManager.BattlePower +
             "\nHealth " + CharacterManager.Health +
             "\nKi " + CharacterManager.Ki +
             "\nStamina " + CharacterManager.Stamina + 

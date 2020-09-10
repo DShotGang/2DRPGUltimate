@@ -122,9 +122,9 @@ public class ShootScript : MonoBehaviour
     private void FixedUpdate()
     {
 
-        projectileSpeed = 10.0f + 2 / CharacterManager.BattlePower;
+        projectileSpeed = CharacterManager.Wisdom / 5 + 2;
 
-        projectilesize = CharacterManager.BattlePower / 200 + projectilesize;
+        projectilesize = CharacterManager.Wisdom / 200 + projectilesize;
 
 
         SkillTeleU = (CharacterManager.SkillTeleU); // "Tele" Being short for telekinesis

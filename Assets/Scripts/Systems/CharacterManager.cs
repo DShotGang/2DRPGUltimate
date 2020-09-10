@@ -26,11 +26,10 @@ public class CharacterManager : MonoBehaviour
     public string CharacterName = "Default";
 
     static public int Level = 1;
-    static public int BattlePower = 50;
     static public float Form = 1f;
 
-    static public int Experience = 1;
-    static public int LevelExperienceNeeded = 3;
+    static public int Experience = 0;
+    static public int LevelExperienceNeeded =3;
 
     static public int Health = 100;
     public int maxHealth = 100;
@@ -117,12 +116,16 @@ public class CharacterManager : MonoBehaviour
     {
 
 
-
+        if (Health <= 0)
+        {
+            Application.Quit();
+        }
         AuraScale();
 
 
         //Health Cap
         if (Health >= maxHealth) { Health = maxHealth; }
+        maxHealth = Strength * 15 + 100;
 
         //Ki Cap
         if (Ki >= maxKi) { Ki = maxKi; }
@@ -261,6 +264,7 @@ public class CharacterManager : MonoBehaviour
         Level = Level + 1;
         LevelExperienceNeeded = LevelExperienceNeeded + 20 * Level;
         TP = TP + 1;
+        Health = maxHealth;
 
         
 
