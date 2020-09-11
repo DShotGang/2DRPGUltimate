@@ -88,7 +88,7 @@ public class Enemy2Ai : MonoBehaviour
             else
              { 
                 
-                if (Vector2.Distance(transform.position, RespawnTarget.position) >= 3)
+                if (Vector2.Distance(transform.position, RespawnTarget.position) >= stoppingDistance)
                  {
                         transform.position = Vector2.MoveTowards(transform.position, RespawnTarget.position, speed * Time.deltaTime);
                         anim.Play("Run");

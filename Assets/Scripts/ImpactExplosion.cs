@@ -43,7 +43,13 @@ public class ImpactExplosion : MonoBehaviour
         {
 
             GameObject a = Instantiate(Explosion) as GameObject;
-            a.transform.localScale = new Vector2(ExplosionSizeMultiplier, ExplosionSizeMultiplier);
+            
+            if (CharacterManager.Strength >= 30)
+            {
+                a.transform.localScale = new Vector2(ExplosionSizeMultiplier, ExplosionSizeMultiplier);
+            }
+            
+            
             a.transform.position = Projectile.transform.position;
             Destroy(Projectile);
         }

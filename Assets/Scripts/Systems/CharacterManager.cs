@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class CharacterManager : MonoBehaviour
 {
     private float timer = 0f;
-    private float timer1 = 0f;
+    private float timer1 = 2f;
     private float timer2 = 0f;
     private float holdDur = 3f;
 
@@ -168,7 +168,7 @@ public class CharacterManager : MonoBehaviour
         if (Input.GetButtonDown("H"))
         {
             timer = Time.time;
-            timer1 = Time.time;
+            
         }
         if (Input.GetButton("H")) // Transform/ next form
         {
@@ -183,7 +183,6 @@ public class CharacterManager : MonoBehaviour
                     Ki = Ki - 150;
                     if (Form >= maxForm) { Form = maxForm; }
                     Base = false;
-                    timer1 = float.PositiveInfinity;
 
                 }
                 
@@ -220,6 +219,7 @@ public class CharacterManager : MonoBehaviour
         {
             Color32 newColor = new Color32(rgbr, rgbg, rgbb, 255);
             AuraColor.color = newColor;
+            timer1 = Time.time;
         }
 
 
@@ -232,6 +232,17 @@ public class CharacterManager : MonoBehaviour
 
         if (Input.GetButton("C"))
         {
+            if(Time.time - timer1 == holdDur)
+            {
+                Ki = Ki + kichargevalue;
+                if (Time.time - timer1 == holdDur) { timer1 = 0; }
+            }
+            else
+            {
+                timer = float.PositiveInfinity;
+            }
+
+
             Ki = Ki + kichargevalue;
         }
         if (passivechargingKi == true)

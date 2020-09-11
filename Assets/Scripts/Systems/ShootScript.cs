@@ -6,18 +6,22 @@ public class ShootScript : MonoBehaviour
 {
     public GameObject crosshairs;
     public GameObject player;
-    public GameObject Shoothole; 
+    public GameObject Shoothole;
     public GameObject projectilePrefab1;
     public GameObject projectilePrefab2;
     public GameObject projectilePrefab3;// Work in Progress
+    public GameObject projectilePrefab4;
     public GameObject Explosion;
+    public Animator anim;
     public static int projectilePrefabchoice; // Work in Progress
 
 
     public float projectileSpeed = 70.0f;
+    public float projectileSpeedMelee = 70.0f;
     public bool facingRight;
 
     public int projectilesize = 1;
+    //public int projectilesize2;
 
 
 
@@ -80,10 +84,23 @@ public class ShootScript : MonoBehaviour
             if (PlayerMovement.projectilechoice == 1)
             {
 
+                
+
+                if (CharacterManager.Stamina >= 5)//Melee
+                {
+                    anim.Play("Melee1");
+                    Invoke("PlayerAttack", 0.25f);
+
+                }
+
+            }
+
+            if (PlayerMovement.projectilechoice >= 2)
+            {
+
                 if (SkillFireballU == true)
                 {
-
-                    if (CharacterManager.Ki >= 5)//Fire Bullet 
+                    if (CharacterManager.Ki >= 5)//Projectile 2 ( Fireball once unlocked )
                     {
                         CharacterManager.Ki = CharacterManager.Ki - 5;
                         float distance = difference.magnitude;
@@ -96,10 +113,10 @@ public class ShootScript : MonoBehaviour
                 }
             }
 
-            if (PlayerMovement.projectilechoice >= 2)
+            if (PlayerMovement.projectilechoice == 3)
             {
 
-                if (CharacterManager.Ki >= 5)//Fire Bullet 
+                if (CharacterManager.Ki >= 5)//Fire Gun bullet Projectile
                 {
                     CharacterManager.Ki = CharacterManager.Ki - 5;
                     float distance = difference.magnitude;
@@ -122,6 +139,15 @@ public class ShootScript : MonoBehaviour
     private void FixedUpdate()
     {
 
+
+
+        if (PlayerMovement.projectilechoice == 1)
+        {
+            projectileSpeedMelee = 367;
+            //projectilesize2 = 1;
+        }
+
+
         projectileSpeed = CharacterManager.Wisdom / 5 + 2;
 
         projectilesize = CharacterManager.Wisdom / 200 + projectilesize;
@@ -136,7 +162,7 @@ public class ShootScript : MonoBehaviour
         SkillTeleportU = (CharacterManager.SkillTeleportU);
         SkillDoubleJumpU = (CharacterManager.SkillDoubleJumpU);
 
-        
+
     }
     //GameObject b;
     void fireProjectile(Vector2 direction, float RotationZ)
@@ -164,19 +190,45 @@ public class ShootScript : MonoBehaviour
 
         if (PlayerMovement.projectilechoice == 3)
         {   // if press 3 choose. This is the last thing i worked on
-            GameObject c = Instantiate(projectilePrefab3) as GameObject;
-            c.transform.position = player.transform.position;
-            c.transform.rotation = Quaternion.Euler(0.0f, 0.0f, RotationZ);
-            c.GetComponent<Rigidbody2D>().velocity = direction * projectileSpeed;
+            GameObject b = Instantiate(projectilePrefab3) as GameObject;
+            b.transform.position = Shoothole.transform.position;
+            b.transform.rotation = Quaternion.Euler(0.0f, 0.0f, RotationZ);
+            b.GetComponent<Rigidbody2D>().velocity = direction * projectileSpeed;
             Debug.Log("Projectile choice = 3");
+        }
+
+        if (PlayerMovement.projectilechoice == 4)
+        {   // if press one choose. This is the last thing i worked on
+            GameObject a = Instantiate(projectilePrefab4) as GameObject;
+            a.transform.position = player.transform.position;
+            a.transform.localScale = new Vector2(projectilesize, projectilesize);
+            a.transform.rotation = Quaternion.Euler(0.0f, 0.0f, RotationZ);
+            a.GetComponent<Rigidbody2D>().velocity = direction * projectileSpeed;
+            Debug.Log("Projectile choice = 4");
         }
 
     }
 
 
 
+    private void PlayerAttack()
+    {
 
-    
+        target = transform.GetComponent<Camera>().ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, transform.position.z));
+        //crosshairs.transform.position = new Vector2(target.x, target.y);
+
+        Vector3 difference = target - player.transform.position;
+        float rotationZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
+
+        CharacterManager.Stamina = CharacterManager.Stamina - 5;
+        float distance = difference.magnitude;
+        Vector2 direction = difference / distance;
+        direction.Normalize();
+        fireProjectile(direction, rotationZ);
+        //Debug.Log("Pew"); //work in progress2
+        anim.Play("Idle");
+    }
+
     private void Flip(float horizontal)
     {
 

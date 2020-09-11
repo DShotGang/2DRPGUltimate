@@ -51,7 +51,8 @@ public class Clicker : MonoBehaviour
         if (SkillSpawnCrateU == true)
         {
 
-            if (CharacterManager.Spam == true) {
+            if (CharacterManager.Spam == true)
+            {
                 if (Input.GetButton("E")) // Spawn Crate
                 {
                     GameObject newItem = Instantiate(Crate) as GameObject;
@@ -88,7 +89,8 @@ public class Clicker : MonoBehaviour
 
 
                 if (CharacterManager.SkillTeleExplodeU == true) // If Telekinesis Force Explode Skill is unlocked
-                { if (Input.GetButton("F")) // Force Explode held object
+                {
+                    if (Input.GetButton("F")) // Force Explode held object
                     {
                         Destroy(theClickedObject.collider.gameObject);
                         GameObject boom = Instantiate(Explosion1) as GameObject;
@@ -100,7 +102,24 @@ public class Clicker : MonoBehaviour
                 }
                 if (CharacterManager.SkillTeleDupeU == true) // if skill duplicate is unlocked 
                 {
-                    if (Input.GetButtonDown("Q")) // Duplicate Held Object
+
+                    if (CharacterManager.Spam == true)
+                    {
+
+
+                        if (Input.GetButton("Q")) // Duplicate Held Object
+                        {
+
+                            GameObject boom = Instantiate(DupeEffect) as GameObject;
+                            boom.transform.position = theClickedObject.transform.position;
+                            GameObject dupe = Instantiate(theClickedObject.collider.gameObject) as GameObject;
+                            dupe.transform.position = new Vector2(theClickedObject.transform.position.x + 1, theClickedObject.transform.position.y + 1);
+
+
+                            Debug.Log("You duped the " + theClickedObject);
+                        }
+                    }
+                    else if (Input.GetButtonDown("Q")) // Duplicate Held Object
                     {
 
                         GameObject boom = Instantiate(DupeEffect) as GameObject;
@@ -111,40 +130,40 @@ public class Clicker : MonoBehaviour
 
                         Debug.Log("You duped the " + theClickedObject);
                     }
+
+
                 }
-                
+
+
+
+
+
+                if (theClickedObject.collider != null)
+                {
+
+
+
+
+                    //Optional: If using Z-Axis to determine sprite render order, use these lines instead
+                    //Transform puzzTrans = puzzlePiece.collider.transform;
+                    //puzzTrans.position = new Vector3(mousePos.x, mousePos.y, puzzTrans.position.z);
+                }
+
+                else
+                {
+                    Debug.Log("Log");
+                }
             }
 
-
-
-
-
-            if (theClickedObject.collider != null)
+            //Did we let go of the mouse button?
+            if (Input.GetButtonUp("Fire1"))
             {
 
-
-
-
-                //Optional: If using Z-Axis to determine sprite render order, use these lines instead
-                //Transform puzzTrans = puzzlePiece.collider.transform;
-                //puzzTrans.position = new Vector3(mousePos.x, mousePos.y, puzzTrans.position.z);
+                //Reset the puzzlePiece to null
+                theClickedObject = new RaycastHit2D();
             }
-
-            else
-            {
-                Debug.Log("Log");
-            }
-        }
-
-        //Did we let go of the mouse button?
-        if (Input.GetButtonUp("Fire1"))
-        {
-
-            //Reset the puzzlePiece to null
-            theClickedObject = new RaycastHit2D();
         }
     }
-
     private void FixedUpdate()
 
     {

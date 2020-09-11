@@ -7,7 +7,7 @@ public class gameobjectdisapear : MonoBehaviour
     public GameObject projectile;
     public GameObject projectile2;
     public GameObject projectile3;
-    public float timeout = 3.0f;
+    public float timeout = 2f;
     public float timer = 0.0f;
     
     
@@ -22,7 +22,12 @@ public class gameobjectdisapear : MonoBehaviour
     {
         if (Time.time - timer > timeout)
         {
-            GameObject.Destroy(projectile, 1);
+            GameObject.Destroy(projectile);
         }
+    }
+
+    private void delete()
+    {
+        GameObject.Destroy(projectile);
     }
 }

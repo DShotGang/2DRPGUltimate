@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
 
     public static Vector2 gravity;
     public Camera Camera;
+    public Text PopUptxt;
 
     public float jumpForce = 400f;
     bool jump = false;
@@ -85,17 +86,29 @@ public class PlayerMovement : MonoBehaviour
         }
 
 
-        if (Input.GetButton("1")) //Scroll to select projectile (Ki blast, gun, kameheha)
+        if (Input.GetButton("1")) //Melee
         {
             projectilechoice = 1;
+            PopUptxt.text = "Melee attack Selected";
+            Invoke("TextReset", 2f);
         }
-        if (Input.GetButton("2")) // scroll down
+        if (CharacterManager.SkillFireballU == true)
         {
-            projectilechoice = 2;
+            if (Input.GetButton("2")) //Fireball
+            {
+                projectilechoice = 2;
+                PopUptxt.text = "Fireball attack Selected";
+                Invoke("TextReset", 2f);
+
+            }
         }
-        if (Input.GetButton("3"))
+
+        if (Input.GetButton("3"))//Gun
         {
             projectilechoice = 3;
+            PopUptxt.text = "Gun Selected";
+            Invoke("TextReset", 2f);
+
         }
 
 
@@ -272,16 +285,23 @@ public class PlayerMovement : MonoBehaviour
 
 
 
+    void TextReset()
+    {
+        PopUptxt.text = "";
+    }
 
 
 
 
 
-    
     private void OnCollisionStay2D(Collision2D collider)
     {
 
-        CheckIfGrounded();
+        if (collider.transform.tag == "Floor" || collider.transform.tag == "Item")
+        {
+            CheckIfGrounded();
+        }
+        
 
         //if (other.transform.tag == "Floor")
         //{

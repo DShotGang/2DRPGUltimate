@@ -168,6 +168,6 @@ MonoBehaviour:
   EnemyLevel: 1
   EnemyHealth: 25
   damage: 2
-  speed: 2
-  stoppingDistance: 3
+  speed: 3
+  stoppingDistance: 1.5
   EnemyGuy: {fileID: 4462728331682415884}
