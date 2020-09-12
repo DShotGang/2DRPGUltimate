@@ -220,7 +220,7 @@ public class ShootScript : MonoBehaviour
         Vector3 difference = target - player.transform.position;
         float rotationZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
 
-        CharacterManager.Stamina = CharacterManager.Stamina - 5;
+        CharacterManager.Stamina = CharacterManager.Stamina - 7;
         float distance = difference.magnitude;
         Vector2 direction = difference / distance;
         direction.Normalize();

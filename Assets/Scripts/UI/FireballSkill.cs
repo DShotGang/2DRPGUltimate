@@ -8,7 +8,7 @@ public class FireballSkill : MonoBehaviour
 
     public Button Button;
     public Text txt;
-
+    public GameObject Object;
 
     // Start is called before the first frame update
     void Start()
@@ -35,6 +35,7 @@ public class FireballSkill : MonoBehaviour
             CharacterManager.SkillFireballU = true;
             txt.text = "You Learned Fireball!";
             Invoke("TextReset", 2f);
+            Destroy(Object);
         }
         else
         {

@@ -137,7 +137,7 @@ MonoBehaviour:
   projectile: {fileID: 8605118249966458927}
   projectile2: {fileID: 0}
   projectile3: {fileID: 0}
-  timeout: 0.4
+  timeout: 0.52
   timer: 0
 --- !u!114 &5347043887116569317
 MonoBehaviour:

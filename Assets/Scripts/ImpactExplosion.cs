@@ -20,7 +20,7 @@ public class ImpactExplosion : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ExplosionSizeMultiplier = CharacterManager.Wisdom / 5 + 1;
+        ExplosionSizeMultiplier = CharacterManager.Wisdom / 15 + 1;
     }
 
     // Update is called once per frame
@@ -43,12 +43,8 @@ public class ImpactExplosion : MonoBehaviour
         {
 
             GameObject a = Instantiate(Explosion) as GameObject;
-            
-            if (CharacterManager.Strength >= 30)
-            {
-                a.transform.localScale = new Vector2(ExplosionSizeMultiplier, ExplosionSizeMultiplier);
-            }
-            
+           
+            if(PlayerMovement.projectilechoice == 2) { a.transform.localScale = new Vector2(ExplosionSizeMultiplier, ExplosionSizeMultiplier); }
             
             a.transform.position = Projectile.transform.position;
             Destroy(Projectile);
@@ -58,9 +54,6 @@ public class ImpactExplosion : MonoBehaviour
         {
 
             Debug.Log("Hit Enemy");
-            GameObject a = Instantiate(Explosion) as GameObject;
-            a.transform.localScale = new Vector2(BP / 2, BP / 2);
-            a.transform.position = Projectile.transform.position;
             Destroy(Projectile);
         }
     }

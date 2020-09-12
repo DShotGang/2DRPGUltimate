@@ -24,7 +24,7 @@ public class ExtraStats : MonoBehaviour
     {
         txt.text = "Expanded Stats\n\n" +
             "Experience needed to Level:  " + CharacterManager.LevelExperienceNeeded +
-            "\nDamage: " + CharacterManager.Damage +
+            "\n Melee Damage: " + CharacterManager.Damage +
             "\n Projectile Damage: " + CharacterManager.KiDamage +
             "\nTraining Points  " + CharacterManager.TP;
     }

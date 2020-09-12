@@ -143,7 +143,19 @@ public class CharacterManager : MonoBehaviour
 
         //Stamina Cap
         if (Stamina >= maxStamina) { Stamina = maxStamina; }
-        Stamina = Stamina + StaminaChargeRate;
+        
+
+
+        timer2 += Time.deltaTime;
+        if (timer2 >= 2) // Do every second
+        {
+            Health = Health + Strength / 4;
+            StaminaChargeRate = Strength * Dexterity / 4;
+            Stamina = Stamina + StaminaChargeRate;
+            timer2 = 0;
+        }
+
+
 
 
         if (Base == true)
@@ -168,43 +180,44 @@ public class CharacterManager : MonoBehaviour
         if (Input.GetButtonDown("H"))
         {
             timer = Time.time;
-            
-        }
-        if (Input.GetButton("H")) // Transform/ next form
-        {
-            if (Time.time - timer > holdDur)
+
+
+            if (Input.GetButton("H")) // Transform/ next form
             {
-                //by making it positive inf, we won't subsequently run this code by accident,
-                //since X - +inf = -inf, which is always less than holdDur
-                CharacterAnimator.Play("TransformSS1");
-                if (Level >= 5 && Level <= 9)
+                if (Time.time - timer > holdDur)
                 {
-                    Form = Form + 0.5f;
-                    Ki = Ki - 150;
-                    if (Form >= maxForm) { Form = maxForm; }
-                    Base = false;
+                    //by making it positive inf, we won't subsequently run this code by accident,
+                    //since X - +inf = -inf, which is always less than holdDur
+                    CharacterAnimator.Play("TransformSS1");
+                    if (Level >= 5 && Level <= 9)
+                    {
+                        Form = Form + 0.5f;
+                        Ki = Ki - 150;
+                        if (Form >= maxForm) { Form = maxForm; }
+                        Base = false;
+
+                    }
+
+                    if (Form == 0f)
+                    {
+                        auraAnimator.Play("AuraAnimBase");
+                        AuraBaseColor();
+                    }
+
+                    if (Form == 0.5f)
+                    {
+                        auraAnimator.Play("AuraAnimBase");
+                        rgbr = 255;
+                        rgbg = 251;
+                        rgbb = 0;
+                    }
 
                 }
-                
-                if (Form == 0f)
-                {
-                    auraAnimator.Play("AuraAnimBase");
-                    AuraBaseColor();
-                }
-
-                if (Form == 0.5f)
-                {
-                    auraAnimator.Play("AuraAnimBase");
-                    rgbr = 255;
-                    rgbg = 251;
-                    rgbb = 0;
-                }
-
             }
-        }
-        else
-        {
-            timer = float.PositiveInfinity;
+            else
+            {
+                timer = float.PositiveInfinity;
+            }
         }
 
 
@@ -232,18 +245,17 @@ public class CharacterManager : MonoBehaviour
 
         if (Input.GetButton("C"))
         {
-            if(Time.time - timer1 == holdDur)
+
+
+            timer1 += Time.deltaTime;
+            if (timer1 >= 0.5)
             {
-                Ki = Ki + kichargevalue;
-                if (Time.time - timer1 == holdDur) { timer1 = 0; }
-            }
-            else
-            {
-                timer = float.PositiveInfinity;
+                Ki = Ki + kichargevalue + CharacterManager.Wisdom;
+                timer1 = 0;
             }
 
 
-            Ki = Ki + kichargevalue;
+            
         }
         if (passivechargingKi == true)
         {
@@ -254,7 +266,7 @@ public class CharacterManager : MonoBehaviour
 
    private void FixedUpdate()
     {
-        Stamina = Stamina + StaminaChargeRate;
+        
 
         if(Experience >= LevelExperienceNeeded)
         {
@@ -268,6 +280,14 @@ public class CharacterManager : MonoBehaviour
         maxKi = Wisdom * 5 + 10;
         
 
+    }
+
+
+    private void EndofIdle()
+    {
+        Health = Health + Strength / 2;
+        StaminaChargeRate = 1 + Strength * Dexterity + 2;
+        Stamina = Stamina + StaminaChargeRate;
     }
 
     private void LevelUp()
