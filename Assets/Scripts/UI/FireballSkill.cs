@@ -20,9 +20,9 @@ public class FireballSkill : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        
+        if (CharacterManager.SkillFireballU == true) { Destroy(Object); }
     }
 
     void TaskOnClick()

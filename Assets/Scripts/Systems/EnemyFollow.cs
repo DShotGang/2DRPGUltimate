@@ -21,6 +21,16 @@ public class EnemyFollow : MonoBehaviour
 
     private Transform RespawnTarget;
 
+
+
+    public AudioSource[] audio_source;
+    public AudioClip[] audio_clip;
+    // Enemy Audio Source array
+    // 0, 0-2 - Attacking / Moving
+    // 1, 3-5 - Getting Attacked / Death
+    // 2, 6-8 - Extra
+
+
     bool beingHit;
 
     // Start is called before the first frame update
@@ -126,6 +136,7 @@ public class EnemyFollow : MonoBehaviour
                 {
 
                     anim.Play("Attack1"); // Play animation
+                    
 
                 }
             }
@@ -137,7 +148,7 @@ public class EnemyFollow : MonoBehaviour
         if (Alive == false)
         {
             anim.Play("Death");
-
+            
             deathEvent();
 
         }
@@ -146,7 +157,8 @@ public class EnemyFollow : MonoBehaviour
     public void deathEvent() // New way of destroying after an animation, This is way better. Using animation events.
     {
         CharacterManager.Experience = CharacterManager.Experience + 2 + EnemyLevel / 2;
-        Invoke("Respawn", 0.599999f);
+        Invoke("Respawn", 0.59f);
+        PlaySelectSound(0, 5);
         Destroy(gameObject, 0.6f);
     }
 
@@ -154,6 +166,7 @@ public class EnemyFollow : MonoBehaviour
     {
         int EnemyDamage = 2 * EnemyLevel + 5;
         CharacterManager.Health = CharacterManager.Health - EnemyDamage;
+        PlayRandomSound(0, 1, 2);
     }
 
     private void ProjectileHit()
@@ -191,7 +204,7 @@ public class EnemyFollow : MonoBehaviour
 
             ProjectileHit();
             Invoke("HitEvent", 0.4f);
-
+            PlayRandomSound(1, 3, 4);
 
         }
 
@@ -200,7 +213,7 @@ public class EnemyFollow : MonoBehaviour
 
             MeleeHit();
             Invoke("HitEvent", 0.4f);
-
+            PlayRandomSound(1, 3, 4);
 
         }
     }
@@ -213,4 +226,27 @@ public class EnemyFollow : MonoBehaviour
             //beingHit = false;
         }
     }
+
+
+    public void PlayRandomSound(int audioplayerselect2, int cliprange1, int cliprange2)
+    {
+        AudioSource chosenaudioplayer = audio_source[audioplayerselect2];
+        if (chosenaudioplayer.isPlaying == false)
+        {
+            int selection = Random.Range(cliprange1, cliprange2);
+            chosenaudioplayer.PlayOneShot(audio_clip[selection]);
+        }
+    }
+
+    public void PlaySelectSound(int audioplayerselect, int selection)
+    {
+
+        AudioSource chosenaudioplayer2 = audio_source[audioplayerselect];
+        if (chosenaudioplayer2.isPlaying == false)
+        {
+            chosenaudioplayer2.PlayOneShot(audio_clip[selection]);
+        }
+    }
+
+
 }

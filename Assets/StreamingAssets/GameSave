@@ -1,0 +1,95 @@
+[
+    {
+        "Key": "Player",
+        "Value": {
+            "entries": [
+                {
+                    "Key": "Stats",
+                    "Value": {
+                        "selected": false,
+                        "data": {
+                            "Strength": {
+                                "IntType": {
+                                    "_int": 1,
+                                    "InitValue": 0,
+                                    "$type": "IntType"
+                                }
+                            },
+                            "Level": {
+                                "IntType": {
+                                    "_int": 1,
+                                    "InitValue": 0,
+                                    "$type": "IntType"
+                                }
+                            },
+                            "Wisdom": {
+                                "IntType": {
+                                    "_int": 2,
+                                    "InitValue": 0,
+                                    "$type": "IntType"
+                                }
+                            },
+                            "Dexterity": {
+                                "IntType": {
+                                    "_int": 1,
+                                    "InitValue": 0,
+                                    "$type": "IntType"
+                                }
+                            },
+                            "Luck": {
+                                "IntType": {
+                                    "_int": 1,
+                                    "InitValue": 0,
+                                    "$type": "IntType"
+                                }
+                            },
+                            "Health": {
+                                "IntType": {
+                                    "_int": 118,
+                                    "InitValue": 0,
+                                    "$type": "IntType"
+                                }
+                            },
+                            "Stamina": {
+                                "IntType": {
+                                    "_int": 18,
+                                    "InitValue": 0,
+                                    "$type": "IntType"
+                                }
+                            },
+                            "Ki": {
+                                "IntType": {
+                                    "_int": 15,
+                                    "InitValue": 0,
+                                    "$type": "IntType"
+                                }
+                            },
+                            "Telekinesis": {
+                                "BoolType": {
+                                    "_bool": false,
+                                    "InitValue": false,
+                                    "$type": "BoolType"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "Key": "Unlocked",
+                    "Value": {
+                        "selected": false,
+                        "data": {
+                            "Fireball": {
+                                "BoolType": {
+                                    "_bool": true,
+                                    "InitValue": false,
+                                    "$type": "BoolType"
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    }
+]

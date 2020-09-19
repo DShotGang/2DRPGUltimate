@@ -19,6 +19,13 @@ public class Enemy2Ai : MonoBehaviour
     private Animator anim;
     private Transform RespawnTarget;
 
+    public AudioSource[] audio_source;
+    public AudioClip[] audio_clip;
+    // Enemy Audio Source array
+    // 0, 0-2 - Attacking / Moving
+    // 1, 3-5 - Getting Attacked / Death
+    // 2, 6-8 - Extra
+
     bool beingHit;
 
     // Start is called before the first frame update
@@ -95,12 +102,12 @@ public class Enemy2Ai : MonoBehaviour
                         if (transform.position.x < RespawnTarget.position.x)
                         {
                             //face right
-                            transform.localScale = new Vector3(6, 6, 6);
+                            transform.localScale = new Vector3(6, 6, 1);
                         }
                         else if (Enemy.position.x > RespawnTarget.position.x)
                         {
                             //face left
-                            transform.localScale = new Vector3(-6, 6, 6);
+                            transform.localScale = new Vector3(-6, 6, 1);
                         }
                  }
                 else
@@ -111,11 +118,10 @@ public class Enemy2Ai : MonoBehaviour
 
 
             if (Vector2.Distance(transform.position, target.position) <= stoppingDistance) // if equals to or less than stopping distance
-            {
+                {
 
-                anim.Play("Attack1"); // Play animation
-
-            }
+                    anim.Play("Attack1"); // Play animation
+                }
         }
 
 
@@ -125,7 +131,7 @@ public class Enemy2Ai : MonoBehaviour
         if (Alive == false)
         {
             anim.Play("Death");
-
+            
             deathEvent();
 
         }
@@ -133,25 +139,37 @@ public class Enemy2Ai : MonoBehaviour
 
     public void deathEvent() // New way of destroying after an animation, This is way better. Using animation events.
     {
+        PlaySelectSound(0, 5);
         CharacterManager.Experience = CharacterManager.Experience + 4 * EnemyLevel;
         Invoke("Respawn", 0.5f);
-        Destroy(gameObject, 0.501f);
+        Destroy(gameObject, 0.52f);
     }
 
     public void attackEvent()
     {
         int EnemyDamage = 5;
         CharacterManager.Health = CharacterManager.Health - EnemyDamage;
+        PlayRandomSound(0, 1, 2);
     }
 
-    private void Hit()
+
+
+
+    private void ProjectileHit()
     {
-        Debug.Log("Hit Enemy");
+        Debug.Log("Hit Enemy with Projectile");
         beingHit = true;
         anim.Play("Take Hit");
         EnemyHealth = EnemyHealth - CharacterManager.KiDamage;
     }
-        
+
+    private void MeleeHit()
+    {
+        Debug.Log("Hit Enemy with Melee");
+        beingHit = true;
+        anim.Play("Take Hit");
+        EnemyHealth = EnemyHealth - CharacterManager.Damage;
+    }
     private void HitEvent()
     {
         beingHit = false;
@@ -171,11 +189,22 @@ public class Enemy2Ai : MonoBehaviour
         if (collider.transform.tag == "Projectile")
         {
 
-            Hit();
+            ProjectileHit();
             Invoke("HitEvent", 0.4f);
-
+            PlayRandomSound(1, 3, 4);
 
         }
+
+        if (collider.transform.tag == "Melee")
+        {
+
+            MeleeHit();
+            Invoke("HitEvent", 0.4f);
+            PlayRandomSound(1, 3, 4);
+
+        }
+
+
     }
 
 
@@ -186,4 +215,25 @@ public class Enemy2Ai : MonoBehaviour
             //beingHit = false;
         }
     }
+
+    public void PlayRandomSound(int audioplayerselect2, int cliprange1, int cliprange2)
+    {
+        AudioSource chosenaudioplayer = audio_source[audioplayerselect2];
+        if (chosenaudioplayer.isPlaying == false)
+        {
+            int selection = Random.Range(cliprange1, cliprange2);
+            chosenaudioplayer.PlayOneShot(audio_clip[selection]);
+        }
+    }
+
+    public void PlaySelectSound(int audioplayerselect, int selection)
+    {
+
+        AudioSource chosenaudioplayer2 = audio_source[audioplayerselect];
+        if (chosenaudioplayer2.isPlaying == false)
+        {
+            chosenaudioplayer2.PlayOneShot(audio_clip[selection]);
+        }
+    }
+
 }

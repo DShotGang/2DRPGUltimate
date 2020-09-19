@@ -7,11 +7,12 @@ public class Clicker : MonoBehaviour
 
     private Camera myCamera; //For storing the camera
     private RaycastHit2D theClickedObject; //For storing the the Clicked Object we are dragging
-
+    public GameObject Player;
     public GameObject Crate;
     public GameObject Explosion1;
     public GameObject DupeEffect;
-
+    private Transform target;
+    private Transform theClickedObjectPos;
     bool TSkill;
 
     bool SkillSpawnCrateU = true;
@@ -37,7 +38,7 @@ public class Clicker : MonoBehaviour
 
         //Store our mouse position at the beginning of the frame for use later
         Vector2 mousePos = myCamera.ScreenToWorldPoint(Input.mousePosition);
-
+        target = Player.GetComponent<Transform>();
         //Did we mouse click? "Fire1" is set to use Mouse0 in Edit > Project Settings > Input Manager
         if (Input.GetButtonDown("Fire1"))
         {
@@ -132,28 +133,24 @@ public class Clicker : MonoBehaviour
                     }
 
 
+
+                    
+
                 }
 
 
 
 
 
-                if (theClickedObject.collider != null)
-                {
+                
 
-
-
-
-                    //Optional: If using Z-Axis to determine sprite render order, use these lines instead
-                    //Transform puzzTrans = puzzlePiece.collider.transform;
-                    //puzzTrans.position = new Vector3(mousePos.x, mousePos.y, puzzTrans.position.z);
-                }
 
                 else
                 {
                     Debug.Log("Log");
                 }
             }
+
 
             //Did we let go of the mouse button?
             if (Input.GetButtonUp("Fire1"))

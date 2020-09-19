@@ -5,7 +5,22 @@ using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
-    
+    //private AudioSource audioplayer;
+    //public AudioSource audioplayer2;
+    //public AudioSource audioplayer3;
+    public AudioSource[] a_source;
+    public AudioClip[] a_clips;
+
+    // Source array
+    // 0 - Health Sounds
+    // 1 - Stamina Breathing sounds
+    // 2 - Ki Sounds
+    // 3 - Ground running sounds
+    // 4 - Skill Sounds
+    // 5 - 
+
+
+
     private Rigidbody2D player;
     public float runSpeed = 2f;
     float timer;
@@ -26,14 +41,11 @@ public class PlayerMovement : MonoBehaviour
     GravityDirection m_GravityDirection;
 
 
+    int Collectables = 0;
 
 
 
-
-
-
-
-
+    
 
 
 
@@ -56,7 +68,7 @@ public class PlayerMovement : MonoBehaviour
         m_GravityDirection = GravityDirection.Down; // direct gravity be goin
         player = GetComponent<Rigidbody2D>();
         anim = gameObject.GetComponent<Animator>();
-
+        //audioplayer = GetComponent<AudioSource>();
 
     }
 
@@ -64,6 +76,27 @@ public class PlayerMovement : MonoBehaviour
     //Called once a frame
     void Update()
     {
+
+        if (CharacterManager.Health <= CharacterManager.maxHealth / 3)
+        {
+            PlaySelectSound(0, 0);
+
+                if (CharacterManager.Health <= CharacterManager.maxHealth / 4)
+            {
+                PlaySelectSound(0,2);
+            }
+
+        }
+
+        if (CharacterManager.Stamina <= CharacterManager.maxStamina / 3)
+        {
+            PlaySelectSound(1, 3);
+            if (CharacterManager.Stamina <= CharacterManager.maxStamina / 4)
+            {
+                PlaySelectSound(1, 4);
+
+            }
+        }
 
 
 
@@ -122,7 +155,12 @@ public class PlayerMovement : MonoBehaviour
         }
 
 
-
+        if (Input.GetButton("Fire2"))
+        {
+            
+                PlayRandomSound(3, 13, 16);
+            
+        }
 
 
 
@@ -234,10 +272,20 @@ public class PlayerMovement : MonoBehaviour
         {
             if (Grounded)
             {
-                player.velocity = new Vector2(player.velocity.x, 0);
-                player.AddForce(new Vector2(0, jumpForce));
-                anim.Play("Jump");
+                if (CharacterManager.Stamina >= 3)
+                {
+                    
+                    player.velocity = new Vector2(player.velocity.x, 0);
+                    player.AddForce(new Vector2(0, jumpForce));
+                    anim.Play("Jump");
 
+                    PlayRandomSound(3, 10, 12);
+
+                    //audioplayer.clip = Jump1;
+                    //audioplayer.Play(0);
+                    Debug.Log("Played Jump Sound");
+                    CharacterManager.Stamina = CharacterManager.Stamina - 3;
+                }
             }
         }
 
@@ -291,7 +339,23 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
-
+    private void OnCollisionEnter2D(Collision2D collider)
+    {
+        if (collider.transform.tag == "BaseFloor")
+        {
+            if (Input.GetButton("Horizontal"))
+            {
+                PlaySelectSound(1,1);
+            }
+        }
+        if (collider.transform.tag == "Grass")
+        {
+            if (Input.GetButton("Horizontal"))
+            {
+                PlaySelectSound(1,2);
+            }
+        }
+    }
 
 
     private void OnCollisionStay2D(Collision2D collider)
@@ -300,9 +364,14 @@ public class PlayerMovement : MonoBehaviour
         if (collider.transform.tag == "Floor" || collider.transform.tag == "Item")
         {
             CheckIfGrounded();
-        }
-        
 
+            }
+
+        if (collider.transform.tag == "Collectable")
+        {
+
+
+        }
         //if (other.transform.tag == "Floor")
         //{
         //Grounded = true;
@@ -341,6 +410,27 @@ public class PlayerMovement : MonoBehaviour
         if (hits.Length > 0)
         {
             Grounded = true;
+        }
+    }
+
+    public void PlayRandomSound(int audioplayerselect2, int cliprange1, int cliprange2)
+    {
+        AudioSource chosenaudioplayer = a_source[audioplayerselect2];
+        if (chosenaudioplayer.isPlaying == false)
+        {
+            int selection = Random.Range(cliprange1, cliprange2);
+            chosenaudioplayer.PlayOneShot(a_clips[selection]);
+        }
+    }
+
+    public void PlaySelectSound(int audioplayerselect, int selection)
+    {
+        //int selection = Random.Range(0, a_clips.Length);
+
+        AudioSource chosenaudioplayer2 = a_source[audioplayerselect];
+        if (chosenaudioplayer2.isPlaying == false)
+        {
+            chosenaudioplayer2.PlayOneShot(a_clips[selection]);
         }
     }
 
